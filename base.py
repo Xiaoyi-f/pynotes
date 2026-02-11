@@ -50,6 +50,7 @@ import sys
 import math
 import time
 import functools
+import doctest
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
@@ -232,7 +233,7 @@ class Timer:
 
 if __name__ == "__main__":
     try:
-        pass
+        doctest.testmod(verbose=True)
     except ExceptionNew as e:
         print(e)
     else:
