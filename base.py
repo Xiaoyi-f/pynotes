@@ -46,6 +46,37 @@ pycharm推荐基础插件:
     _*标识为保护状态
     __*标识为私有状态，实际可以通过_类名__属性名来访问/修改
 """
+
+"""
+1. 关键词（Keywords）
+关键词是 Python 语法本身保留的单词，不能用作变量名。一共 35 个（Python 3.11+）。
+
+可以用 help(“keywords”) 查看完整列表。它们分几类：
+
+· 控制流：if elif else for while break continue pass
+· 逻辑与比较：and or not is in
+· 定义结构：def return yield lambda class
+· 异常处理：try except finally raise assert
+· 导入与包：import from as
+· 异步：async await（3.5+）
+· 上下文管理：with
+· 变量操作：del global nonlocal
+· 布尔与空：True False None
+· 其他：match case _（3.10+）
+
+2. BIFs（内置函数）
+BIFs 是 Python 预定义好的函数，随时可用，不需要 import。比如 print() len() type()。
+
+可以用 dir(__builtins__) 看到全部。核心分类：
+
+· 输入输出：print() input() format()
+· 类型转换：int() str() list() dict() set() tuple() bool() float()
+· 数学运算：abs() round() pow() sum() min() max()
+· 迭代与序列：len() range() enumerate() zip() map() filter() sorted() reversed()
+· 对象操作：type() isinstance() id() hash() dir() help()
+· 其他常用：open() super() eval() exec()
+"""
+
 import sys
 import math
 import time
@@ -71,6 +102,7 @@ set_data = frozenset({1, 3, 5, 7})  # &set
 # .get(key, default) .setdefault(key, default) .popitem() .update(dict)
 dict_data = dict({"name": "xiaoyi", "hash_only": "hash_only"})
 # sum() max() min() abs() round() len() all() any()
+# for...if...->()[]{}
 none_data = None
 true_val = True
 false_val = False
