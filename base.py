@@ -88,10 +88,11 @@ import doctest
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-
 int_num = int(12)  # python的int类型是大数字，会自行扩展
 float_num = float(12.5)  # python的float类型是双精度的，占据8个字节
-string = str("hello world")  # .find(sub_string) .lower() .upper() .title() .replace(old, new) .split(sep) .join(iterable)
+string = str(
+    "hello world"
+)  # .find(sub_string) .lower() .upper() .title() .replace(old, new) .split(sep) .join(iterable)
 complex_num = complex(1, 2)  # 1 + 2j
 bytes_data = b"hello world"
 byte_array = bytearray(b"hello world")
@@ -147,7 +148,11 @@ container = {"start": None, "end": None, "step": None}
 for i in container.keys():  # .values() .items()
     container[i] = input(f"请输入{i}的值:")
 
-start, end, step = int(container["start"]), int(container["end"]), int(container["step"])
+start, end, step = (
+    int(container["start"]),
+    int(container["end"]),
+    int(container["step"]),
+)
 
 for i in range(start, end, step):
     pass
@@ -168,7 +173,7 @@ else:
 # __eq__(本类实例, 参数)->return __ne__(本类实例, 参数)->return __lt__(本类实例, 参数)->return __gt__(本类实例, 参数)->return __le__(本类实例, 参数)->return __ge__(本类实例, 参数)->return
 # __format__(self, format_spec)->format_spec = xxx->return
 
-print(type(type), sep='', end='\n', file=sys.stderr)  # 元类
+print(type(type), sep="", end="\n", file=sys.stderr)  # 元类
 help(object)  # 基类
 
 """
@@ -195,7 +200,26 @@ class MyMeta(type):
         pass
 
 
+# 描述符类
+class Descriptor:
+    def __init__(self):
+        self.test = "descriptor"
+
+    def __get__(self, obj, cls):
+        print(f"__get__ called for instance: {obj}")
+        return self.test
+
+    def __set__(self, obj, value):
+        print(f"__set__ called for instance: {obj}")
+        self.test = value
+
+    def __delete__(self, obj):
+        print(f"__delete__ called for instance: {obj}")
+        del self.test
+
+
 def MyClass(metaclass=MyMeta):
+    desc_var = Descriptor()
     pass
 
 
@@ -245,15 +269,18 @@ class Dog(Animal):
 
 
 def power(base, exp):
-    return base ** exp
+    return base**exp
+
 
 square = functools.partial(power, exp=2)
 
-@dataclass # -> 自动生成对应__init__, __repr__, __eq__
-class data():
+
+@dataclass  # -> 自动生成对应__init__, __repr__, __eq__
+class data:
     name: str
     age: int
     height: float
+
 
 with open("test.txt", "w") as file:
     """
@@ -268,6 +295,7 @@ with open("test.txt", "w") as file:
     """
     pass
 
+
 class Timer:
     def __enter__(self):
         self.start_time = time.time()
@@ -278,7 +306,9 @@ class Timer:
     def __exit__(self, exc_type, exc_value, exc_trace):
         end_time = time.time()
         print(f"Elpased time: {end_time - self.start_time:.4f} seconds")
-        print(f"当前时间: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}")
+        print(
+            f"当前时间: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))}"
+        )
         return False
 
 
@@ -291,4 +321,3 @@ if __name__ == "__main__":
         print("没有异常")
     finally:
         print("无论是否有异常都会执行")
-

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if post %}
+        编辑文章 - {{ post.title }}
+    {% else %}
+        新建文章
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="post-card card">
+    <div class="card-body">
+        <h2 class="card-title mb-4">
+            {% if post %}
+                <i class="fas fa-edit"></i> 编辑文章
+            {% else %}
+                <i class="fas fa-plus"></i> 新建文章
+            {% endif %}
+        </h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <!-- 标题字段 -->
+            <div class="mb-3">
+                <label for="{{ form.title.id_for_label }}" class="form-label">
+                    {{ form.title.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">请输入吸引人的文章标题</div>
+            </div>
+            
+            <!-- 内容字段 -->
+            <div class="mb-3">
+                <label for="{{ form.content.id_for_label }}" class="form-label">
+                    {{ form.content.label }} <span class="text-danger">*</span>
+                </label>
+                {{ form.content }}
+                {% if form.content.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.content.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">支持换行，建议使用段落分隔</div>
+            </div>
+            
+            <!-- 分类字段 -->
+            <div class="mb-3">
+                <label for="{{ form.category.id_for_label }}" class="form-label">
+                    {{ form.category.label }}
+                </label>
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.category.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">选择合适的文章分类</div>
+            </div>
+            
+            <!-- 标签字段 -->
+            <div class="mb-3">
+                <label for="{{ form.tags.id_for_label }}" class="form-label">
+                    {{ form.tags.label }}
+                </label>
+                {{ form.tags }}
+                {% if form.tags.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.tags.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">可选择多个标签，按住Ctrl键多选</div>
+            </div>
+            
+            <!-- 状态字段 -->
+            <div class="mb-3">
+                <label for="{{ form.status.id_for_label }}" class="form-label">
+                    {{ form.status.label }}
+                </label>
+                {{ form.status }}
+                {% if form.status.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.status.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">草稿不会公开显示，发布后才会在前台展示</div>
+            </div>
+            
+            <!-- SEO描述字段 -->
+            <div class="mb-3">
+                <label for="{{ form.meta_description.id_for_label }}" class="form-label">
+                    {{ form.meta_description.label }}
+                </label>
+                {{ form.meta_description }}
+                {% if form.meta_description.errors %}
+                    <div class="text-danger small mt-1">
+                        {% for error in form.meta_description.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-text">简短的文章描述，有利于搜索引擎收录</div>
+            </div>
+            
+            <!-- 表单按钮 -->
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> 
+                    {% if post %}更新文章{% else %}发布文章{% endif %}
+                </button>
+                <a href="{% if post %}{{ post.get_absolute_url }}{% else %}{% url 'blog:post_list' %}{% endif %}" 
+                   class="btn btn-secondary">
+                    <i class="fas fa-times"></i> 取消
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Markdown提示卡片 -->
+<div class="post-card card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">
+            <i class="fas fa-lightbulb"></i> 写作小贴士
+        </h5>
+        <ul class="mb-0">
+            <li>标题要简洁明了，吸引读者点击</li>
+            <li>内容要有条理，适当使用段落分隔</li>
+            <li>选择准确的分类和标签便于读者查找</li>
+            <li>SEO描述控制在160字符以内效果最佳</li>
+            <li>草稿可以随时保存，不用担心丢失</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

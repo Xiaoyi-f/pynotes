@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}服务器错误 - 500{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="display-1 text-danger">500</h1>
+                <h2>服务器内部错误</h2>
+                <p class="lead">抱歉，服务器遇到了一些问题。</p>
+                <hr>
+                <p>我们的技术团队已经收到错误报告，正在紧急处理中。</p>
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">返回首页</a>
+                    <button onclick="history.back()" class="btn btn-secondary">返回上页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

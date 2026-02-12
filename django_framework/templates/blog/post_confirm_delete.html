@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}删除文章确认{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="post-card card border-danger">
+            <div class="card-body text-center">
+                <div class="text-danger mb-4">
+                    <i class="fas fa-exclamation-triangle fa-3x"></i>
+                </div>
+                
+                <h2 class="card-title text-danger mb-4">确认删除文章？</h2>
+                
+                <div class="alert alert-warning">
+                    <h4 class="alert-heading">即将删除的文章：</h4>
+                    <p class="mb-0"><strong>{{ post.title }}</strong></p>
+                </div>
+                
+                <p class="text-muted mb-4">
+                    此操作不可撤销，文章及其所有相关内容将被永久删除。
+                </p>
+                
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg me-3">
+                        <i class="fas fa-trash"></i> 确认删除
+                    </button>
+                </form>
+                
+                <a href="{{ post.get_absolute_url }}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-times"></i> 取消
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
