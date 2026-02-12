@@ -151,9 +151,13 @@ start, end, step = int(container["start"]), int(container["end"]), int(container
 
 for i in range(start, end, step):
     pass
+else:
+    print("循环正常结束")
 
-while True:
-    pass
+# while True:
+#     pass
+# else:
+#     print("循环正常结束")
 
 # __bases__ __class__ __dict__->dir(obj) __mro__ __name__
 # __new__(本类) __init__(本类实例) __call__(本类实例) __bool__(本类实例)
