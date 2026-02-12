@@ -15,6 +15,9 @@ python基础语法模块.
     pip install black
     pip -m venv .venv -> .venv/Scripts/activate # deactivate
 
+    pip freeze > requirements.txt
+    pip install -r requirements.txt
+
     pip install ipython -> 下载高级 python shell
 
 pycharm推荐基础插件:
