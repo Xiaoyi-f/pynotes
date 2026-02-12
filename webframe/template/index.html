@@ -15,10 +15,15 @@
                     var currentAdd = $(this);  
                     currentAdd.click(function(){  
                         code = $(this).attr("systemIdVaule"); 
-                        alert("/add/" + code + ".html"); 
                         $.get("/add/" + code + ".html", function(data, status){
-                            alert("数据: " + data + "\n状态: " + status);
-                        });
+                            if (data.status === "success") {
+                                alert(data.message);
+                            } else if (data.status === "info") {
+                                alert(data.message);
+                            } else {
+                                alert(data.message);
+                            }
+                        }, "json");
                     });  
                 });  
         });

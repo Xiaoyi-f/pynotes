@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>修改备注 - 个人选股系统 V5.87</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/jquery-1.12.4.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 表单提交处理
+            $(".note-form").submit(function (e) {
+                e.preventDefault(); // 阻止默认提交
+                
+                var code = $("#stockCode").val();
+                var note = $("#noteInfo").val();
+                
+                if (!note.trim()) {
+                    alert("备注信息不能为空");
+                    return;
+                }
+                
+                // 发送ajax请求保存备注
+                $.ajax({
+                    url: "/save_note/" + code + ".html",
+                    type: "POST",
+                    data: { note_info: note },
+                    success: function (data) {
+                        if (data.status === "success") {
+                            alert(data.message);
+                            window.location.href = "/center.html";
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function () {
+                        alert("保存失败，请重试");
+                    }
+                });
+            });
+            
+            // 取消按钮
+            $("#cancelBtn").click(function () {
+                window.location.href = "/center.html";
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle" data-toggle="collapse" data-target="#mymenu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/index.html" class="navbar-brand">选股系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="mymenu">
+                <ul class="nav navbar-nav">
+                    <li><a href="/index.html">股票信息</a></li>
+                    <li class="active"><a href="/center.html">个人中心</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">修改股票备注</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="note-form">
+                            <div class="form-group">
+                                <label for="stockCode">股票代码</label>
+                                <input type="text" class="form-control" id="stockCode" name="stockCode" value="{{stock_code}}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="noteInfo">备注信息</label>
+                                <textarea class="form-control" id="noteInfo" name="noteInfo" rows="4" placeholder="请输入备注信息">{{note_info}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="stockInfo">股票信息</label>
+                                <div class="alert alert-info" role="alert">
+                                    {{stock_info}}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">保存备注</button>
+                            <button type="button" id="cancelBtn" class="btn btn-default">取消</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -30,24 +30,53 @@ class HttpWebServer:
         if len(requst_data) == 1:
             client_socekt.close()
             return
-        # 求资源的路径
+        
+        # 获取请求方法和路径
+        request_method = requst_data[0]
         request_path = requst_data[1]
 
         if request_path == "/":
             request_path = "/index.html"
 
+        # 符合wsgi协议的参数
+        env = {
+            "request_path": request_path,
+            "REQUEST_METHOD": request_method
+        }
+
+        # 处理POST请求数据
+        if request_method == "POST":
+            # 查找Content-Length头部
+            content_length = 0
+            for line in client_request_data.split("\r\n"):
+                if line.startswith("Content-Length:"):
+                    content_length = int(line.split(":")[1].strip())
+                    break
+            
+            # 读取POST数据
+            if content_length > 0:
+                # 如果数据超过1024字节，继续读取
+                if len(client_request_data) < content_length:
+                    post_data = client_socekt.recv(content_length - len(client_request_data.split("\r\n\r\n")[1])).decode("utf-8", errors="ignore")
+                else:
+                    post_data = client_request_data.split("\r\n\r\n")[1] if len(client_request_data.split("\r\n\r\n")) > 1 else ""
+                
+                env["wsgi.input"] = type('MockStream', (), {'read': lambda self, n=None: post_data.encode()})()
+                env["CONTENT_LENGTH"] = str(content_length)
+
         # 判断是否是静态资源的请求
         if request_path.endswith(".html"):
             """动态资源"""
-            # 符合wsgi协议的参数
-            env = {
-                "request_path":request_path
-            }
-
             # 应答行
             response_line = "HTTP/1.1 200 OK\r\n"
             # 应答头
             response_header = "Server:pwb\r\n"
+            # 允许跨域请求
+            response_header += "Access-Control-Allow-Origin: *\r\n"
+            # 允许POST请求
+            response_header += "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n"
+            # 允许的头部
+            response_header += "Access-Control-Allow-Headers: Content-Type\r\n"
             # 应答体
             response_body = dynamic.frame.application(env)
             # 应答数据

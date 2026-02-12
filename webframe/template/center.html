@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,76 +10,194 @@
     <script src="/js/jquery-1.12.4.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
+            // 显示加载状态
+            $("#loading").show();
+            $("#emptyData").hide();
+            $("#statsContainer").hide();
+
             // 发送ajax请求，获取个人中心数据
-            $.get("center_data.html",function (data) {
-                // ajax 成功回调函数
+            $.get("center_data.html", function (data) {
+                // 隐藏加载状态
+                $("#loading").hide();
+
                 // 获取table标签
-                var $table = $(".table");
+                var $table = $("#stockTable");
+                // 清空表格数据
+                $table.find("tr:gt(0)").remove();
+
                 // 如果指定了返回数据的解析方式是json，那么data就是一个js对象
-                for(var i = 0; i < data.length; i++){
-                    // 根据下标获取每一个个人中心数据js对象
-                    var oCenterData = data[i];
+                if (data.length > 0) {
+                    $("#emptyData").hide();
+                    $("#statsContainer").show();
 
-                    // 封装后的每一个tr标签
-                    var oTr = '<tr>' +
-                                '<td>'+ oCenterData.code +'</td>' +
-                                '<td>'+ oCenterData.short +'</td>' +
-                                '<td>'+ oCenterData.chg +'</td>' +
-                                '<td>'+ oCenterData.turnover +'</td>' +
-                                '<td>'+ oCenterData.price +'</td>' +
-                                '<td>'+ oCenterData.highs +'</td>' +
-                                '<td>'+ oCenterData.note_info +'</td>' +
-                                '<td><a type="button" class="btn btn-default btn-xs" href="/update/000007.html"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 修改 </a></td>' +
-                                '<td><input type="button" value="删除" id="toDel" name="toDel" systemidvaule="000007"></td>' +
-                                '</tr>'
-                    // 给table标签追加每一行tr标签
-                    $table.append(oTr)
+                    // 计算统计信息
+                    var totalStocks = data.length;
+                    var upStocks = 0;
+                    var downStocks = 0;
+                    var totalChg = 0;
 
+                    for (var i = 0; i < data.length; i++) {
+                        // 根据下标获取每一个个人中心数据js对象
+                        var oCenterData = data[i];
+
+                        // 计算涨跌幅统计
+                        var chg = parseFloat(oCenterData.chg.replace('%', ''));
+                        if (chg > 0) {
+                            upStocks++;
+                        } else if (chg < 0) {
+                            downStocks++;
+                        }
+                        totalChg += chg;
+
+                        // 设置涨跌幅颜色
+                        var chgColor = '';
+                        if (chg > 0) {
+                            chgColor = 'style="color: red; font-weight: bold;"';
+                        } else if (chg < 0) {
+                            chgColor = 'style="color: green; font-weight: bold;"';
+                        }
+
+                        // 封装后的每一个tr标签
+                        var oTr = '<tr style="cursor: pointer; transition: background-color 0.2s;">' +
+                            '<td>' + oCenterData.code + '</td>' +
+                            '<td>' + oCenterData.short + '</td>' +
+                            '<td ' + chgColor + '>' + oCenterData.chg + '</td>' +
+                            '<td>' + oCenterData.turnover + '</td>' +
+                            '<td>' + oCenterData.price + '</td>' +
+                            '<td>' + oCenterData.highs + '</td>' +
+                            '<td>' + (oCenterData.note_info || '<span class="text-muted">无备注</span>') + '</td>' +
+                            '<td><a type="button" class="btn btn-primary btn-xs" href="/update/' + oCenterData.code + '.html"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 修改 </a></td>' +
+                            '<td><input type="button" value="删除" id="toDel" name="toDel" systemIdVaule="' + oCenterData.code + '" class="btn btn-danger btn-xs"></td>' +
+                            '</tr>'
+                        // 给table标签追加每一行tr标签
+                        $table.append(oTr)
+                    }
+
+                    // 计算平均涨跌幅
+                    var avgChg = totalStocks > 0 ? (totalChg / totalStocks).toFixed(2) : 0;
+
+                    // 更新统计信息
+                    $("#totalStocks").text(totalStocks);
+                    $("#upStocks").text(upStocks);
+                    $("#downStocks").text(downStocks);
+                    $("#avgChg").text(avgChg + '%');
+                } else {
+                    // 显示空数据提示
+                    $("#emptyData").show();
+                    $("#statsContainer").hide();
                 }
 
-            }, "json");
-            $("input[name='toDel']").each(function(){
-                var currentAdd = $(this);
-                currentAdd.click(function(){
-                    code = $(this).attr("systemIdVaule");
-                    alert("/del/" + code + ".html");
-                    $.get("/del/" + code + ".html", function(data, status){
-                        alert("数据: " + data + "\n状态: " + status);
-                    });
-                    window.location.reload()
-                });
+            }, "json").fail(function () {
+                // 隐藏加载状态
+                $("#loading").hide();
+                // 显示错误提示
+                alert("数据加载失败，请刷新页面重试");
+            });
+            $("#stockTable").on("click", "input[name='toDel']", function () {
+                var code = $(this).attr("systemIdVaule");
+                $.get("/del/" + code + ".html", function (data, status) {
+                    if (data.status === "success") {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                }, "json");
             });
         });
     </script>
 </head>
 
 <body>
-<div class="navbar navbar-inverse navbar-static-top ">
+    <div class="navbar navbar-inverse navbar-static-top ">
         <div class="container">
-        <div class="navbar-header">
+            <div class="navbar-header">
                 <button class="navbar-toggle" data-toggle="collapse" data-target="#mymenu">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                 </button>
-                 <a href="#" class="navbar-brand">选股系统</a>
-        </div>
-        <div class="collapse navbar-collapse" id="mymenu">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">选股系统</a>
+            </div>
+            <div class="collapse navbar-collapse" id="mymenu">
                 <ul class="nav navbar-nav">
-                        <li ><a href="/index.html">股票信息</a></li>
-                        <li class="active"><a href="">个人中心</a></li>
+                    <li><a href="/index.html">股票信息</a></li>
+                    <li class="active"><a href="">个人中心</a></li>
                 </ul>
 
+            </div>
         </div>
-        </div>
-</div>
-<div class="container">
+    </div>
+    <div class="container">
 
-    <div class="container-fluid">
+        <div class="container-fluid">
 
-        <table class="table table-hover">
-            <tr>
+            <!-- 页面标题 -->
+            <div class="page-header" style="margin-bottom: 20px;">
+                <h1>个人中心 <small>我的关注股票</small></h1>
+                <p class="text-muted">查看和管理您关注的股票，及时了解市场动态</p>
+            </div>
+
+            <!-- 加载状态 -->
+            <div id="loading"
+                style="text-align: center; padding: 40px; display: none; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 20px;">
+                <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="sr-only">加载中...</span>
+                </div>
+                <p style="margin-top: 15px; font-size: 16px;">正在加载数据，请稍候...</p>
+            </div>
+
+            <!-- 统计信息 -->
+            <div id="statsContainer" style="margin-bottom: 20px; display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">关注股票统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="alert alert-primary" role="alert">
+                                    <h6 class="alert-heading">关注总数</h6>
+                                    <p id="totalStocks" class="mb-0">0</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-success" role="alert">
+                                    <h6 class="alert-heading">上涨股票</h6>
+                                    <p id="upStocks" class="mb-0">0</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-danger" role="alert">
+                                    <h6 class="alert-heading">下跌股票</h6>
+                                    <p id="downStocks" class="mb-0">0</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="alert alert-warning" role="alert">
+                                    <h6 class="alert-heading">平均涨跌幅</h6>
+                                    <p id="avgChg" class="mb-0">0%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 空数据提示 -->
+            <div id="emptyData" style="text-align: center; padding: 40px; display: none;">
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">暂无关注股票</h4>
+                    <p>您还没有关注任何股票，去首页添加吧！</p>
+                    <hr>
+                    <p class="mb-0"><a href="/index.html" class="btn btn-primary">去添加股票</a></p>
+                </div>
+            </div>
+
+            <table id="stockTable" class="table table-hover table-striped table-bordered"
+                style="box-shadow: 0 2px 4px rgba(0,0,0,0.1); background-color: white;">
+                <tr>
                     <th>股票代码</th>
                     <th>股票简称</th>
                     <th>涨跌幅</th>
@@ -88,10 +207,11 @@
                     <th style="color:red">备注信息</th>
                     <th>修改备注</th>
                     <th>del</th>
-            </tr>
-            {%content%}
-        </table>
+                </tr>
+                {%content%}
+            </table>
+        </div>
     </div>
-</div>
 </body>
-</html>            
+
+</html>
