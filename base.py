@@ -131,6 +131,15 @@ elif 1 or 0:
 else:
     print("over_test")
 
+# python的match...case...不会自动穿透
+match "python":
+    case "python":
+        print("python")
+    case "python3":
+        print("python3")
+    case _:
+        print("这个是通配项")
+
 # id() is not isinstance(var, type)
 # not in
 
@@ -141,6 +150,9 @@ for i in container.keys():  # .values() .items()
 start, end, step = int(container["start"]), int(container["end"]), int(container["step"])
 
 for i in range(start, end, step):
+    pass
+
+while True:
     pass
 
 # __bases__ __class__ __dict__->dir(obj) __mro__ __name__
