@@ -1,6 +1,6 @@
 import socket
 import threading
-import dynamic.frame
+import webframework.frame
 
 # 获取用户请求资源的路径
 # 根据请求资源的路径，读取指定文件的数据
@@ -78,7 +78,7 @@ class HttpWebServer:
             # 允许的头部
             response_header += "Access-Control-Allow-Headers: Content-Type\r\n"
             # 应答体
-            response_body = dynamic.frame.application(env)
+            response_body = webframework.frame.application(env)
             # 应答数据
             response_data = response_line + response_header + "\r\n" + response_body
 
