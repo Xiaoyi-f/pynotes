@@ -1,149 +1,125 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from contextlib import contextmanager
 
-# ============ 工作中真的在用的 ============
+# 1. 连接数据库（把root/123456改成你的）
+# 格式: mysql+pymysql://用户名:密码@地址/数据库名
+engine = create_engine("mysql+pymysql://root:123456@localhost/test")
 
-# ------------ 1. 连接数据库（只写一次）------------
-engine = create_engine(
-    "mysql+pymysql://root:123456@localhost/test?charset=utf8mb4",
-    pool_size=10,  # 连接池大小
-    pool_pre_ping=True,  # 防止死连接
-    echo=False,  # 生产环境关掉SQL日志
-)
+# 2. 创建会话类（用它操作数据库）
 Session = sessionmaker(bind=engine)
+
+# 3. 基类（所有表都要继承它）
 Base = declarative_base()
 
 
-# ------------ 2. 定义表（最常见）------------
+# 4. 定义表结构（像写Python类一样）
 class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False, index=True)  # 经常查询加索引
-    age = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.now)
+    __tablename__ = "users"  # 表名
+    id = Column(Integer, primary_key=True)  # 主键自增
+    name = Column(String(50))  # 用户名
+    age = Column(Integer)  # 年龄
 
 
-# 建表（部署时跑一次）
+# 5. 建表（运行一次就会创建表）
 Base.metadata.create_all(engine)
 
 
-# ------------ 3. 增删改查（天天写）------------
-def user_demo():
+# 6. 自动管理session（不用手动关连接）
+@contextmanager
+def get_session():
     session = Session()
     try:
-        # 增
-        user = User(name="张三", age=25)
-        session.add(user)
-        session.commit()
-        print(f"新增ID: {user.id}")
-
-        # 查（工作中filter_by比filter常用）
-        user = session.query(User).filter_by(name="张三").first()
-
-        # 查（分页）
-        users = (
-            session.query(User)
-            .filter(User.age > 18)
-            .order_by(User.id.desc())
-            .limit(20)
-            .all()
-        )
-
-        # 改
-        user.age = 26
-        session.commit()
-
-        # 删
-        session.delete(user)
-        session.commit()
-
+        yield session  # 返回session给你用
+        session.commit()  # 没报错就提交
+    except:
+        session.rollback()  # 报错就回滚
+        raise
     finally:
-        session.close()
+        session.close()  # 最后关闭连接
 
 
-# ------------ 4. 真实项目模板（复制即用）------------
+# 7. 增删改查（天天写）
+# 增：添加用户
+with get_session() as session:
+    user = User(name="张三", age=25)  # 创建用户对象
+    session.add(user)  # 添加到数据库
+    # 提交后user.id自动有值
+
+# 查：查询单个用户
+with get_session() as session:
+    user = session.query(User).filter_by(name="张三").first()
+    # first()拿第一个，找不到返回None
+
+# 查：查询列表（分页）
+with get_session() as session:
+    users = session.query(User).filter(User.age > 18).limit(10).all()
+    # all()返回所有符合条件的
+
+# 改：修改用户
+with get_session() as session:
+    user = session.query(User).filter_by(name="张三").first()
+    if user:  # 找到了才改
+        user.age = 26  # 直接改属性
+
+# 删：删除用户
+with get_session() as session:
+    user = session.query(User).filter_by(name="张三").first()
+    if user:
+        session.delete(user)  # 删除这个用户
+
+
+# 8. 封装成服务（实际项目这么写）
 class UserService:
-    """用户服务类"""
+    # 查单个
+    def get(self, id):
+        with get_session() as s:
+            return s.query(User).filter_by(id=id).first()
 
-    def __init__(self):
-        self.Session = Session
+    # 查列表（分页）
+    def list(self, page=1, size=10):
+        with get_session() as s:
+            return s.query(User).offset((page - 1) * size).limit(size).all()
 
-    def get_by_id(self, user_id):
-        session = self.Session()
-        try:
-            return session.query(User).filter_by(id=user_id).first()
-        finally:
-            session.close()
-
-    def get_list(self, page=1, page_size=20):
-        session = self.Session()
-        try:
-            return (
-                session.query(User)
-                .order_by(User.id.desc())
-                .offset((page - 1) * page_size)
-                .limit(page_size)
-                .all()
-            )
-        finally:
-            session.close()
-
+    # 新增
     def create(self, **kwargs):
-        session = self.Session()
-        try:
-            user = User(**kwargs)
-            session.add(user)
-            session.commit()
-            return user
-        except Exception as e:
-            session.rollback()
-            raise e
-        finally:
-            session.close()
+        with get_session() as s:
+            user = User(**kwargs)  # 传name=张三, age=25
+            s.add(user)
+            return user  # 返回带id的用户对象
 
-    def update(self, user_id, **kwargs):
-        session = self.Session()
-        try:
-            session.query(User).filter_by(id=user_id).update(kwargs)
-            session.commit()
-        finally:
-            session.close()
+    # 修改
+    def update(self, id, **kwargs):
+        with get_session() as s:
+            s.query(User).filter_by(id=id).update(kwargs)
 
-    def delete(self, user_id):
-        session = self.Session()
-        try:
-            session.query(User).filter_by(id=user_id).delete()
-            session.commit()
-        finally:
-            session.close()
+    # 删除
+    def delete(self, id):
+        with get_session() as s:
+            s.query(User).filter_by(id=id).delete()
 
 
-# ------------ 5. 初始化（真正的项目结构）------------
-# config.py
-DB_CONFIG = {
-    "user": "root",
-    "password": "123456",
-    "host": "localhost",
-    "port": 3306,
-    "database": "test",
-}
+# 9. 使用示例
+service = UserService()
 
+# 增
+user = service.create(name="李四", age=30)
+print(user.id)  # 打印新增用户的ID
 
-# db.py
-def init_db():
-    """初始化数据库连接"""
-    url = f"mysql+pymysql://{DB_CONFIG['user']}:{DB_CONFIG['password']}@{DB_CONFIG['host']}:{DB_CONFIG['port']}/{DB_CONFIG['database']}?charset=utf8mb4"
-    engine = create_engine(url, pool_size=10, pool_pre_ping=True)
-    Session = sessionmaker(bind=engine)
-    return Session, engine
+# 查
+user = service.get(1)
+print(user.name, user.age)  # 打印用户信息
 
+# 改
+service.update(1, age=31)  # 把ID=1的用户年龄改成31
 
-# models.py - 只定义表结构
-Base = declarative_base()
-# ... 定义你的模型
+# 删
+service.delete(1)  # 删除ID=1的用户
 
-# services.py - 业务逻辑
-# class UserService: ...
+"""
+重点：
+1. 定义表：class User(Base)
+2. 查询：session.query(表).filter_by(条件).first()
+3. 增删改：add/delete后自动提交
+"""

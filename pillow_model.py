@@ -5,6 +5,7 @@ import os
 
 # pip install pillow
 
+
 # 图形验证码
 def generate_captcha(text=None, width=120, height=40):
     """生成验证码图片
