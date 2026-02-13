@@ -8,6 +8,11 @@ color 0A           :: ← 设置颜色（0背景黑，A前景绿）
 cls                :: ← 清屏
 echo 操作完成！    :: ← 给用户提示信息
 
+systeminfo :: 查看系统信息
+cleanmgr :: 清理磁盘
+
+:: win r 运行框命令 -> services.msc -> mspaint -> cmd ctrl enter开启管理员权限打开cmd
+
 cd                           :: 显示当前目录的完整路径
 cd Documents                 :: 进入Documents目录
 cd..                         :: 返回上一级目录

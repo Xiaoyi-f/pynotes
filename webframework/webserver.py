@@ -2,6 +2,7 @@ import socket
 import threading
 import webframework.frame
 
+
 # 获取用户请求资源的路径
 # 根据请求资源的路径，读取指定文件的数据
 # 组装指定文件数据的响应报文，发送给浏览器
@@ -11,7 +12,7 @@ class HttpWebServer:
         # 1.编写一个TCP服务端程序
         # 创建socekt
         self.tcp_server_socekt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # 设置端口复用　
+        # 设置端口复用
         self.tcp_server_socekt.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, True)
         # 绑定地址
         self.tcp_server_socekt.bind(("", 8080))
@@ -30,7 +31,7 @@ class HttpWebServer:
         if len(requst_data) == 1:
             client_socekt.close()
             return
-        
+
         # 获取请求方法和路径
         request_method = requst_data[0]
         request_path = requst_data[1]
@@ -39,10 +40,7 @@ class HttpWebServer:
             request_path = "/index.html"
 
         # 符合wsgi协议的参数
-        env = {
-            "request_path": request_path,
-            "REQUEST_METHOD": request_method
-        }
+        env = {"request_path": request_path, "REQUEST_METHOD": request_method}
 
         # 处理POST请求数据
         if request_method == "POST":
@@ -52,16 +50,24 @@ class HttpWebServer:
                 if line.startswith("Content-Length:"):
                     content_length = int(line.split(":")[1].strip())
                     break
-            
+
             # 读取POST数据
             if content_length > 0:
                 # 如果数据超过1024字节，继续读取
                 if len(client_request_data) < content_length:
-                    post_data = client_socekt.recv(content_length - len(client_request_data.split("\r\n\r\n")[1])).decode("utf-8", errors="ignore")
+                    post_data = client_socekt.recv(
+                        content_length - len(client_request_data.split("\r\n\r\n")[1])
+                    ).decode("utf-8", errors="ignore")
                 else:
-                    post_data = client_request_data.split("\r\n\r\n")[1] if len(client_request_data.split("\r\n\r\n")) > 1 else ""
-                
-                env["wsgi.input"] = type('MockStream', (), {'read': lambda self, n=None: post_data.encode()})()
+                    post_data = (
+                        client_request_data.split("\r\n\r\n")[1]
+                        if len(client_request_data.split("\r\n\r\n")) > 1
+                        else ""
+                    )
+
+                env["wsgi.input"] = type(
+                    "MockStream", (), {"read": lambda self, n=None: post_data.encode()}
+                )()
                 env["CONTENT_LENGTH"] = str(content_length)
 
         # 判断是否是静态资源的请求
@@ -105,7 +111,9 @@ class HttpWebServer:
                 response_body = "404 Not Found sorry"
                 # 应答数据
                 # 组装指定文件数据的响应报文，发送给浏览器
-                response_data = (response_line + response_header + "\r\n" + response_body).encode()
+                response_data = (
+                    response_line + response_header + "\r\n" + response_body
+                ).encode()
 
                 client_socekt.send(response_data)
             else:
@@ -117,7 +125,9 @@ class HttpWebServer:
                 response_body = file_data
                 # 应答数据
                 # 组装指定文件数据的响应报文，发送给浏览器
-                response_data = (response_line + response_header + "\r\n").encode() + response_body
+                response_data = (
+                    response_line + response_header + "\r\n"
+                ).encode() + response_body
 
                 client_socekt.send(response_data)
             finally:
@@ -130,11 +140,13 @@ class HttpWebServer:
             # 建立链接
             client_socekt, client_addr = self.tcp_server_socekt.accept()
             # 创建子线程
-            sub_thread = threading.Thread(target=self.handle_client_request, args=(client_socekt,))
+            sub_thread = threading.Thread(
+                target=self.handle_client_request, args=(client_socekt,)
+            )
             sub_thread.start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 创建服务器对象
     my_web_server = HttpWebServer()
     # 启动服务器
