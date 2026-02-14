@@ -289,10 +289,12 @@ class data:
 
 
 def double_yield():
-    x = yield
+    x = yield  # 等待接收值给x -> 这个只执行一次
     while True:
-        x = yield x * 2
+        x = yield x * 2  # 先生成值再等待接收
 
+
+# yield使用口诀: 有值则生，引用则等
 
 gen = double_yield()
 next(gen)  # 启动生成器
