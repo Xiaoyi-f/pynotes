@@ -84,6 +84,7 @@ BIFs 是 Python 预定义好的函数，随时可用，不需要 import。比如
 import sys
 import math
 import time
+import copy
 import functools
 import doctest
 from abc import ABC, abstractmethod
@@ -154,6 +155,10 @@ start, end, step = (
     int(container["end"]),
     int(container["step"]),
 )
+
+original_list = [1, 2, [3, 4]]
+shallow_copy = copy.copy(original_list)
+deep_copy = copy.deepcopy(original_list)
 
 for i in range(start, end, step):
     pass
@@ -283,9 +288,36 @@ class data:
     height: float
 
 
+def double_yield():
+    x = yield
+    while True:
+        x = yield x * 2
+
+
+gen = double_yield()
+next(gen)  # 启动生成器
+print(gen.send(10))
+print(gen.send(5))
+
+
+def exception_handling_generator():
+    try:
+        while True:
+            yield
+    except GeneratorExit:
+        print("Generator closed")
+
+
+gen = exception_handling_generator()
+next(gen)
+gen.close()
+
+# enumerate(zip(), start=n)
+
 with open("test.txt", "w") as file:
     """
     file.read(字节数)
+    file.readline()
     file.readlines()
     file.write(data)
     file.writelines(iterable)
