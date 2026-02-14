@@ -2,11 +2,9 @@
 python基础语法模块.
 
 基础配置：
-    # Linux/Mac - 换源
-    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-    pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
-
-    # Windows（PowerShell或CMD） - 换源
+    # pip config set 属性名 属性值 -》 pypi simple tuna.tsinghua.edu.cn
+    # 1.pip配置设置全局下的索引url
+    # 2.pip配置设置全局下的信任主机
     pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
     pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
 
