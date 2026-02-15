@@ -30,5 +30,5 @@ ssh root@ip
 curl -o file url # 下载文件
 ping ip/域名
 ifconfig
-
+\ 命令分行
 

@@ -47,6 +47,73 @@ docker start <containername> 启动容器
 docker rm <containername> 删除容器
 docker inspect <containername> 查看容器信息
 
+# Docker数据卷 -> 数据交换/本地保存 
+数据卷是宿主机中的一个目录 
+当容器目录和数据卷绑定后，对方的修改会立即同步 
+一个数据卷可以被多个容器同时挂载 
+一个容器也可以被挂载多个数据卷 
+docker run ... -v 宿主机目录/文件:容器目录/文件 
+注意: 
+    目录必须是绝对路径
+    如果目录不存在，会自动创建 
+    可以挂载多个数据卷
+~ 表示/root目录 
+容器本身是一个虚拟机，容器目录指的是容器系统的某个目录
+建议在root中
+    创建一个data目录再创建对应的数据卷存放数据 
 
+# 网络 
+容器内容的网络和外部机器不能直接通信 
+外部机器和宿主机可以直接通信 
+宿主机和容器可以直接通信
+
+# 网络连接
+将宿主机的某个端口和容器的某个端口映射 
+映射端口可以一样，因为他们不是同一个系统
+-p 宿主机端口:容器端口 
+使用$PWD占位路径 
+
+# 注意: 提前创建好需要的目录/进入到对应目录操作 
+
+# 部署示例
+mysql部署 
+    mkdir mysql
+    cd mysql 
+    docker run -i -d \
+        -p 3306:3306 \
+        --name=mysql8 \
+        -v $PWD/conf:/etc/mysql/conf.d \
+        -v $PWD/logs:/logs \
+        -v $PWD/data:/var/lib/mysql \
+        -e MYSQL_ROOT_PASSWORD=<PASSWORD> \
+        mysql:8.0 # 版本声明 
+-e是配置环境变量 
+conf.d是linux约定熟成的配置文件目录名 
+外界访问docker要访问宿主机ip和映射的端口 
+
+nginx部署 
+    mkdir nginx
+    cd nginx
+    docker run -i -d \
+        -p 80:80 \ 
+        -v $PWD/website:/usr/share/nginx/html \
+        -v $PWD/conf/nginx.conf:/etc/nginx/nginx.conf \
+        -v $PWD/logs:/var/log/nginx \
+        nginx:latest
+
+# Docker镜像原理 
+Docker镜像是由特殊的文件系统叠加而成的 
+最底端是bootfs，并使用宿主机的bootfs
+第二层是root文件系统rootfs，称为 base image 
+然后可往上再叠加其他镜像文件，形成依赖链 
+
+# 镜像制作 
+1.容器转镜像 
+    docker commit 容器id 镜像名称:版本号 
+    docker save -o 压缩文件名称 镜像名称:版本号
+    docker load -i 压缩文件名称 
+    目录挂载的会失连，需要重新挂载
+2.dockerfile
+    docker build -f DockerfileURL -t 镜像名称:版本号 
 
 
