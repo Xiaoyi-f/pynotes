@@ -1,5 +1,0 @@
-2026-02-16 23:09:20,012 - logging_model.py[line:33] - DEBUG:This is a debug message
-2026-02-16 23:09:20,012 - logging_model.py[line:34] - INFO:This is an info message
-2026-02-16 23:09:20,012 - logging_model.py[line:35] - WARNING:This is a warning message
-2026-02-16 23:09:20,012 - logging_model.py[line:36] - ERROR:This is an error message
-2026-02-16 23:09:20,012 - logging_model.py[line:37] - CRITICAL:This is a critical message
