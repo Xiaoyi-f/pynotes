@@ -14,13 +14,6 @@ logging模块记录日志的方式:
 
 import logging
 
-# 输出到控制台
-logging.debug("This is a debug message")  # 默认不输出
-logging.info("This is an info message")  # 默认不输出
-logging.warning("This is a warning message")
-logging.error("This is an error message")
-logging.critical("This is a critical message")
-
 # 日志等级和输出格式配置
 logging.basicConfig(
     level=logging.DEBUG,
@@ -37,3 +30,8 @@ logging.basicConfig(
 # 日志信息
 # 保存到文件
 # 文件读写模式设置
+logging.debug("This is a debug message")  # 默认不输出
+logging.info("This is an info message")  # 默认不输出
+logging.warning("This is a warning message")
+logging.error("This is an error message")
+logging.critical("This is a critical message")

@@ -116,4 +116,12 @@ Docker镜像是由特殊的文件系统叠加而成的
 2.dockerfile
     docker build -f DockerfileURL -t 镜像名称:版本号 
 
-
+# Docker Compose
+服务编排: 按照一定规则管理多个容器
+1.利用Dockerfile定义环境镜像
+2.使用docker-compose.yml定义组成应用的各种服务
+3.运行docker-compose up 启动应用
+4.运行docker-compose down 停止应用
+下载:
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+docker compose version 检验安装

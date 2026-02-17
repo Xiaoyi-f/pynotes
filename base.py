@@ -33,7 +33,7 @@ pycharm推荐基础插件:
 统一规范:
     包/目录/变量/函数/方法名 -> 蛇形小写
     类名 -> 大驼峰
-    私有构建包&测试包 -> _utils&tests -> _tools&test_demo
+    测试包 -> test_demo
     文档包 -> docs
     工具包 -> utils
     依赖文件 -> requirements.txt
@@ -50,7 +50,7 @@ pycharm推荐基础插件:
 """
 
 """
-1. 关键词（Keywords）
+1. 关键词（Keywords）-> keyword.kwlist
 关键词是 Python 语法本身保留的单词，不能用作变量名。一共 35 个（Python 3.11+）。
 
 可以用 help(“keywords”) 查看完整列表。它们分几类：
@@ -169,12 +169,12 @@ else:
 #     print("循环正常结束")
 
 # __bases__ __class__ __dict__->dir(obj) __mro__ __name__
-# __new__(本类) __init__(本类实例) __call__(本类实例) __bool__(本类实例)
-# __getattribute__(本类实例，属性名)->return super().__getattribute__(属性名)
-# __getattr__(本类实例, 属性名)->return name __setattr__(本类实例, 属性名, 属性值)->super().__setattr__(属性名, 属性值) __delattr__(本类实例, 属性名)->super().__delattr__(属性名)
-# __hash__(本类实例)->return __str__(本类实例)->return __repr__(本类实例)->return
-# __add__(本类实例, 参数)->return __sub__(本类实例, 参数)->return __mul__(本类实例, 参数)->return __truediv__(本类实例, 参数)->return __floordiv__(本类实例, 参数)->return __mod__(本类实例, 参数)->return __pow__(本类)
-# __eq__(本类实例, 参数)->return __ne__(本类实例, 参数)->return __lt__(本类实例, 参数)->return __gt__(本类实例, 参数)->return __le__(本类实例, 参数)->return __ge__(本类实例, 参数)->return
+# __new__(本类) __init__(self) __call__(self) __bool__(self)
+# __getattribute__(self，属性名)->return super().__getattribute__(属性名)
+# __getattr__(self, 属性名)->return name __setattr__(self, 属性名, 属性值)->super().__setattr__(属性名, 属性值) __delattr__(self, 属性名)->super().__delattr__(属性名)
+# __hash__(self)->return __str__(self)->return __repr__(self)->return
+# __add__(self)__sub__(self) __mul__(self) __truediv__(self) __floordiv__(self) __mod__(self) __pow__(self)
+# __eq__(self) __ne__(self) __lt__(self) __gt__(self) __le__(self) __ge__(self)
 # __format__(self, format_spec)->format_spec = xxx->return
 
 print(type(type), sep="", end="\n", file=sys.stderr)  # 元类
@@ -276,7 +276,7 @@ def power(base, exp):
     return base**exp
 
 
-square = functools.partial(power, exp=2)
+square = functools.partial(power, base=1)
 
 
 @dataclass  # -> 自动生成对应__init__, __repr__, __eq__
