@@ -1,0 +1,38 @@
+{% extends "base_title.html" %}
+{% block title %}用户注册{% endblock %}
+{% block body %}
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+
+.boder {
+    border: 1px solid #5B96D0;
+}
+
+.col1 {
+    background-color: #A6D2FF;
+    text-align: right;
+    padding-right: 10px;
+    border: 1px solid #5B96D0;
+    line-height: 50px;
+}
+
+.col2 {
+    padding-left: 10px;
+    border: 1px solid #5B96D0;
+    line-height: 50px;
+}
+
+.textfield {
+    height: 20px;
+    width: 200px;
+    border: 1px solid #999999;
+    text-align: left;
+    font-size: medium;
+    line-height: 50px;
+}
+
+</style>
+<div> <img src = "{{ url_for('static', filename = './static/images/reg.jpg') }}" align = "absmiddle"> </div>
+{% endblock %}
