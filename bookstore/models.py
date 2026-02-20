@@ -1,4 +1,4 @@
-from app import db
+from exts import db
 
 
 # 客户表
@@ -15,7 +15,7 @@ class Customer(db.Model):
 # 商品表
 class Goods(db.Model):
     __tablename__ = "goods"
-    goods_id = db.Column("goods_id", db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column("goods_id", db.Integer, primary_key=True, autoincrement=True)
     name = db.Column("name", db.String(100), nullable=False)
     author = db.Column("author", db.String(30))
     press = db.Column("press", db.String(200))
@@ -35,8 +35,8 @@ class Goods(db.Model):
 # 订单表
 class Orders(db.Model):
     __tablename__ = "orders"
-    orders_id = db.Column("orders_id", db.Integer, primary_key=True)
-    order_date = db.Column("order_date", db.String(20))
+    id = db.Column("orders_id", db.Integer, primary_key=True)
+    orderdate = db.Column("order_date", db.String(20))
     # 1表示待付款；0表示已付款
     status = db.Column("status", db.Integer, default=1)
     total = db.Column("total", db.Float)
@@ -55,4 +55,4 @@ class OrderLineItem(db.Model):
         "orders_id", db.Integer, db.ForeignKey("orders.orders_id"), nullable=False
     )
     quantity = db.Column("quantity", db.Integer)
-    sub_total = db.Column("sub_total", db.Float)
+    subtotal = db.Column("sub_total", db.Float)

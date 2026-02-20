@@ -10,7 +10,7 @@
     {% endfor %}
 </ul>
 <form action = "/login" method = "post">
-    <input type = "hidden" name = "csrf_token" value = "{{ csrf_token }}" />
+    <input type = "hidden" name = "csrf_token" value = "{{ csrf_token() }}" />
     <table width = "100%" align = "center">
     <tr height = "40">
     <td colspan = "2" align = "center"><strong>请您登录</strong></td>

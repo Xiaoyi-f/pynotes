@@ -34,5 +34,56 @@ table {
 }
 
 </style>
-<div> <img src = "{{ url_for('static', filename = './static/images/reg.jpg') }}" align = "absmiddle"> </div>
+<div> <img src = "{{ url_for('static', filename = 'images/reg.jpg') }}" align = "absmiddle"> </div>
+<br>
+<hr width="100%" />
+<!--显示登录错误信息-->
+<ul>
+    {% for field, errors in form.errors.items() %}
+        {% for message in errors %}
+            <li class="error">{{ message }}</li>
+        {% endfor %}
+    {% endfor %}
+</ul>
+<div class="text3" align="center">请填写下列信息</div>
+<br>
+<form action="/reg/" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <table width="60%" border="0" align="center" class="boder">
+        <tr>
+            <td width="35" height="27" class="col1">客户账号:</td>
+            <td class="col2">{{ form.userid(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">客户姓名:</td>
+            <td class="col2">{{ form.name(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">客户密码:</td>
+            <td class="col2">{{ form.password(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">再次输入密码:</td>
+            <td class="col2">{{ form.password2(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">出生日期:</td>
+            <td class="col2">{{ form.birthday(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">通信地址:</td>
+            <td class="col2">{{ form.address(class='input') }}</td>
+        </tr>
+        <tr>
+            <td height="27" class="col1">电话号码:</td>
+            <td class="col2">{{ form.phone(class='input') }}</td>
+        </tr>
+    </table>
+    <br>
+    <div align="center">
+        <input type="image" src="{{ url_for('static', filename='images/submit_button.jpg') }}">
+    </div>
+</form>
 {% endblock %}
+
+

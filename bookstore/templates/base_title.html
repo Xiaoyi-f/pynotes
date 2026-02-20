@@ -3,7 +3,7 @@
     <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='../static/css/public.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/public.css') }}">
     </head>
     <body>
     {% with messages = get_flashed_messages() %}
