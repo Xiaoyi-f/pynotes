@@ -22,4 +22,3 @@ def resolve(n):
 if __name__ == "__main__":
     n = int(input("请输入一个数值，我将判断它是否为快乐数:"))
     print(resolve(n))
-
