@@ -6,6 +6,7 @@ String -> .length
 Undefined
 Null
 // 实际使用都小写就好
+// 除了类使用大驼峰，其他都是用小驼峰命名
 
 高级数据类型:
 Array -> .length -> 可读写,修改关联变容 (empty * n)
