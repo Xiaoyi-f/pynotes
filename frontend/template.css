@@ -1,0 +1,226 @@
+/*
+选择器:
+.,
+#,
+>,
++,
+~,
+selector1,
+selector2,
+selector3,
+selector1 selector2 selector3,
+selector1selector2selector3,
+[attr],
+[attr=value],
+[attr^=value],
+[attr$=value],
+[attr*=value]
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flex-item {
+  flex: 1;
+  align-self: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  padding: 20px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text {
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bg {
+  background-color: #f5f5f5;
+  background-image: url('image.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+:root {
+  --primary: #42b983;
+  --spacing: 8px;
+  --radius: 4px;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}
+
+@media (max-height: 768px) or (orientation: landscape) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}
+
+@media not (min-width: 768px) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .container {
+    padding: 10px;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.units {
+  width: 100%;
+  font-size: 16px;
+  padding: 1rem;
+  margin: 2em;
+  height: 100vh;
+  max-width: 1200px;
+}
+
+.btn {
+  background: blue;
+}
+
+#submit {
+  background: red;
+}
+
+.special {
+  background: yellow !important;
+}
+
+ol {
+  counter-reset: section;
+  list-style: none;
+}
+
+li::before {
+  counter-increment: section;
+  content: "第" counter(section) "章 ";
+}
+
+.transition {
+  will-change: all;
+  transition: all 0.3s ease;
+}
+
+.transition:hover {
+  transform: scale(1.1);
+}
+
+.card {
+  padding: calc(var(--spacing) * 2);
+  border-radius: var(--radius);
+}
+
+/* 网上搜索字体网站/库 */
+@font-face {
+  font-family: 'my-font';
+  src:
+    url('demo.woff2') format('woff2'),
+    url('demo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 若引入字体已经配置了某些属性，某些属性可能不生效 */
+

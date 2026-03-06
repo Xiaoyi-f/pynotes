@@ -1,0 +1,8 @@
+# 这个文件要放在根目录空间下
+User-agent: *
+Disallow: /admin/
+Allow: /public/
+# 以上声明都是可以写多个的
+# Sitemap: xxx --> Vue项目推荐使用vite-plugin-sitemap插件生成sitemap
+Crawl-delay: 10
+# 单位: s(秒)

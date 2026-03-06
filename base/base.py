@@ -44,6 +44,7 @@ Pycharm推荐插件:
     Material Theme UI Lite
     Rainbow Brackets Lite - Free
     Translation
+    AceJump --> ctrl ; 启动模式 esc 退出模式
     
 Pycharm基本使用:
     配置按键映射 -> ctrl d 删除当前行
