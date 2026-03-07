@@ -6,22 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="description" content="The base of HTML.">
   <meta name="keywords" content="HTML">
-  <meta name="author" content="XiaoYi">
-  <meta name="copyright" content="Copyright 2026 XiaoYi. All rights reserved.">
+  <meta name="copyright" content="Copyright (c) 2026 by Xiaoyi-f, All Rights Reserved.">
+  <meta name="author" content="Xiaoyi-f">
+  <meta name="description" content="HTML">
   <meta name="og:title" content="The base of HTML.">
-  <meta name="og:description" content="The base of HTML.">
-  <link rel="stylesheet" href="./template.css" media="">
-  <link rel="icon" href="favicon.ico">
-  <link rel="prev" href="prev.html">
-  <link rel="next" href="next.html">
-  <title>The base of HTML.</title>
+  <meta name="og:description" content="The desc of HTML.">
+  <meta name="og:image" content="xxx">
+  <link rel="icon" href="xxx">
+  <link rel="stylesheet" href="template.css">
+  <link rel="prev" href="xxx">
+  <link rel="next" href="xxx">
+  <title>HTML</title>
   <style>
     * {
       padding: 0;
-      margin: 0;
       border: 0;
+      margin: 0;
       box-sizing: border-box;
     }
   </style>
@@ -29,38 +30,31 @@
 
 <body>
   <header>
+    <video src="title.mp4" style="pointer-events: none;" muted autoplay loop></video>
     <h1>标题</h1>
-    <!-- 导航栏 -->
-    <nav>
-    </nav>
+    <nav>导航栏</nav>
   </header>
 
-  <div>
+  <div class="main">
     <main>
-      <!-- 标题系列 -->
-      <h1>一级标题（页面唯一）</h1>
-
-      <!-- 文章区块 -->
+      <h1>一级标题</h1>
       <article>
-        <h2>文章标题</h2>
+        <h2>二级标题</h2>
 
-        <!-- 文章内的分段 -->
         <section>
           <h3>第一节</h3>
-          <p>普通段落，包含<strong>强调</strong>和<em>斜体</em></p>
+          <p>普通段落，包含<strong>强调</strong>、<ins>下划线</ins>、<em>斜体</em>、<del>删除线</del></p>
           <span>行内标签</span>
         </section>
 
         <section>
           <h3>第二节</h3>
-          <!-- 链接和图片 -->
-          <a href="https://example.com" target="_blank">外部链接</a>
-          <img src="image.jpg" alt="图片描述" loading="lazy">
+          <a href="xxx"></a>
+          <img src="tuotuo.png" alt="demo" loading="lazy">
         </section>
 
         <section>
-          <h3>第三节：列表</h3>
-          <!-- 列表 -->
+          <h3>第三节</h3>
           <ul>
             <li>无序列表项</li>
           </ul>
@@ -69,14 +63,13 @@
           </ol>
           <dl>
             <dt>定义列表项</dt>
-            <dd>定义列表项的描述</dd>
+            <dd>定义列表描述</dd>
           </dl>
         </section>
       </article>
 
-      <!-- 表格区块 -->
       <section>
-        <h2>数据表格</h2>
+        <h2>表格数据</h2>
         <table>
           <caption>表格标题</caption>
           <thead>
@@ -87,8 +80,8 @@
           </thead>
           <tbody>
             <tr>
-              <td>数据</td>
-              <td>数据</td>
+              <td>表体</td>
+              <td>表体</td>
             </tr>
           </tbody>
           <tfoot>
@@ -100,89 +93,97 @@
         </table>
       </section>
 
-      <!-- 表单区块 -->
       <section>
-        <h2>用户表单</h2>
+        <h2>表单区域</h2>
         <form action="/submit" method="post">
-          <!-- 输入框 -->
-          <label for="name">姓名：</label>
-          <input type="text" id="name" name="name" placeholder="请输入" required>
+          <label for="name">姓名:</label> <!-- for指向的是id, name和 value 是一对的 -->
+          <input type="text" id="name" name="name" placeolder="请输入" required>
 
-          <!-- 数字输入 -->
-          <label for="age">年龄：</label>
+          <label for="age">年龄:</label>
           <input type="number" id="age" name="age" min="0" max="150">
 
-          <!-- 下拉选择 -->
-          <label for="city">城市：</label>
-          <select id="city" name="city">
-            <option value="">请选择</option>
+          <label for="city">城市:</label>
+          <select name="city" id="city">
+            <option value="" hidden>请选择</option>
             <option value="beijing">北京</option>
             <option value="shanghai">上海</option>
           </select>
 
-          <!-- 多行文本 -->
-          <label for="bio">简介：</label>
-          <textarea id="bio" name="bio" rows="4" maxlength="200"></textarea>
+          <br>
+          <label for="bio">简介:</label>
+          <br>
+          <textarea name="bio" id="bio" rows="4" maxlength="200" disabled style="resize: none;"></textarea>
+          <hr>
 
-          <!-- 复选框/单选框 -->
           <label>
             <input type="checkbox" name="agree" required> 同意协议
           </label>
+          <label>
+            <input type="checkbox" name="agree" required> 同意跟随
+          </label>
 
-          <!-- 按钮 -->
+          <br>
+
+          <label>
+            <input type="radio" name="sex" id="male"> 男
+          </label>
+          <label>
+            <input type="radio" name="sex" id="female"> 女
+          </label>
+
           <button type="reset">重置</button>
           <button type="submit">提交</button>
         </form>
       </section>
 
       <section>
-      <!-- 媒体区块 -->
-      <h2>媒体文件</h2>
-      <figure>
-        <img src="photo.jpg" alt="照片">
-        <figcaption>图片说明</figcaption>
-      </figure>
+        <h2>媒体文件</h2>
 
-      <video controls loop muted autoplay>
-        <source src="xxx" type="xxx">
-      </video>
-      <audio controls loop muted>
-        <source src="xxx" type="xxx">
-      </audio>
+        <figure>
+          <img src="tuotuomiao.png" alt="picture">
+          <figcaption>图片说明</figcaption>
+        </figure>
+
+        <video controls muted loop autoplay>
+          <source src="xx" type="xx">
+          <source src="xx" type="xx">
+        </video>
+
+        <audio controls muted loop>
+          <source src="xx" type="xx">
+          <source src="xx" type="xx">
+        </audio>
       </section>
     </main>
 
     <aside>
       <h3>侧边栏</h3>
 
-      <!-- 侧边栏内的独立区块 -->
       <section>
         <h4>相关文章</h4>
         <ul>
-          <li><a href="#">推荐文章</a></li>
+          <li><a href="javascript:">超链接</a></li>
+          <li><a href="#">超链接</a></li>
         </ul>
       </section>
 
       <section>
         <h4>广告位</h4>
-        <p>这里可以放广告或推广内容</p>
+        <p>这里可以放广告或推送内容</p>
       </section>
     </aside>
   </div>
 
   <footer>
-    <p>&copy; 2026 作者 XiaoYi --NieJianbing 版权所有, 禁止任何形式的未经授权转载</p>
-    <!-- 2026整年版权所有 -->
-    <!-- 底部导航 -->
+    <p>&copy; 2026 作者 Xiaoyi-f --NieJianbing 版权所有，禁止任何形式未经授权转载</p>
+    <!-- 2026整年内版权所有 -->
     <nav>
-      <a href="/privacy">隐私政策</a> |
-      <a href="/terms">使用条款</a> |
-      <a href="/sitemap">网站地图</a>
+      <a href="xxx">xxx</a>
+      <a href="xxx">xxx</a>
+      <a href="xxx">xxx</a>
     </nav>
   </footer>
-
-  <!-- 脚本放在最后 -->
-  <script src="script.js"></script>
+  <script src="xxx"></script>
 </body>
 
 </html>
