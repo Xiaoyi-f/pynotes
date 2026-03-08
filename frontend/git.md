@@ -36,4 +36,6 @@ rules: {
 删除子目录的子.git文件
 git rm -r --cached 子目录 # --cached一定要开
 
+# 设置代理
+git config --global https.proxy http://127.0.0.1:[代理端口]
 
