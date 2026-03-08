@@ -12,7 +12,7 @@ doctest.testmod()
 import time
 
 time.strftime("%Y-%m-%d, %H:%M:%S", time.localtime(time.time())
-              time.sleep()
+time.sleep()
 
 import sys
 

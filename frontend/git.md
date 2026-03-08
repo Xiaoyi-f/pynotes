@@ -8,7 +8,7 @@
 # 基本命令:
 cd 对应目录
 git init
-git clone <url> 
+git clone <url> # 一般clone主分支
 git checkout -b branch_name 
 git pull <别名> <分支>
 git status 
