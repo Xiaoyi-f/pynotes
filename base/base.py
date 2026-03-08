@@ -295,5 +295,9 @@ for i in annotations:
 
 sum = n + m
 
+"""
+元编程是编写能够“操作程序本身”的计算机程序
+python中元编程主要由 协议 魔法 装饰器 元类 描述符 动态 AST 实现
+"""
 print(f"总共{sum}个必会语法")
 print(f"综合keywords，大约需要学习{(sum // 10 + 2) * 10}+种语法就可以掌握python基础")

@@ -104,7 +104,7 @@ class Demo extends Object {
     }
 }
 
-定时器
+定时器 --> 单位: ms
 targetTimeout = setTimeout(() => {
 }, time)
 
@@ -118,9 +118,9 @@ clearInterval(targetInterval)
 import cloneDeep from 'lodash/cloneDeep'
 const cloned = cloneDeep(obj)
 
-节点操作:
+节点操作 --> tag: ...'div':
 document.createElement(tag)
-document.querySelector(tag) as HTMLXxxElement
+document.querySelector(tag)
 document.querySelectorAll()
 parent.appendChild()
 parent.insertBefore(newElement, referenceElement)
@@ -167,6 +167,17 @@ const demoObj = JSON.parse(demoStr)
 document.cookie = "key=value"
 // 建议JS只设置非敏感简单Cookie -> 指定好URL
 
+Cookie基本内容:
+'key',
+'value',
+max_age=3600,           # 1小时（秒）
+expires=None,           # 可用具体时间/时刻
+path='/',
+domain='.example.com',
+secure=True,            # 仅 HTTPS
+httponly=True,          # JS 无法读取
+samesite='Strict'       # Lax / Strict / None
+
 高级方法:
 .map(args => {})
 .forEach(args => {})
@@ -174,12 +185,12 @@ document.cookie = "key=value"
 
 # 2.高级概念:
 防抖：在事件被触发后，等待一段时间再执行函数，如果在这段时间内再次触发，则重新计时
-防抖生活类比
+防抖生活类比 --> 延迟刷新
 ● 电梯例子：电梯门打开后，如果有人不断进来，电梯就一直等待。只有当最后一个人进来后，等待一段时间没人再进，电梯才关门运行
 ● 搜索框：用户打字时不要立即搜索，等用户停止输入后再搜索
 
 节流：在一定时间间隔内，函数最多只执行一次，无论触发多少次，都保证在指定时间间隔内执行一次
-节流生活类比
+节流生活类比 --> 定时刷新
 ● 游戏技能：技能释放后有冷却时间，冷却期间不能再次释放
 ● 公交车：公交车每10分钟一班，无论站台有多少人，都按时发车
 守卫：在快级代码运行前后进行系列操作，守护程序的良好运行
