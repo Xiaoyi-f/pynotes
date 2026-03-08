@@ -1,0 +1,21 @@
+key: "string"
+num: 18
+bool: true
+test: null (~)
+
+# 多行文本保留换行符
+description: |
+    "description test"
+    "test string"
+
+# 多行文本折叠换行，换行符转为空格
+folded_text: >
+    "test string"
+    "test demo"
+
+# 序列
+list: []
+
+# 字典
+dict: {}
+

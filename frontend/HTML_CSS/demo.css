@@ -1,0 +1,312 @@
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 紧凑选择器 --> 交集选择器 */
+/* “字色行高光标手，列表可见继承受” “盒模背景定位浮，边框装饰不带走。” */
+/* !important > 行内 > ID > 类 > 伪类 > 元素 > 伪元素 > 通配符* */
+body {
+  display: flex;
+  /* 横向多行 --> flex-wrap: wrap; */
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
+  background-color: white;
+  color: black;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+header {
+  background-image: linear-gradient(135deg, skyblue 0%, white 100%);
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 50%;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: 2px 2px 10px skyblue;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* x偏 y偏 模糊 颜色 */
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.main {
+  display: flex;
+  gap: 2%;
+  padding: 1.2rem;
+  flex-direction: row;
+}
+
+main {
+  flex: 7;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.aside {
+  flex: 3;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+ol {
+  list-style-position: inside;
+}
+
+ul {
+  list-style-type: none;
+}
+
+/* before */
+h1::after {
+  content: "";
+  display: block;
+  width: 98%;
+  height: 2px;
+  background-color: skyblue;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.2rem;
+  border-radius: 2px;
+}
+
+h2 {
+  padding: 0.5rem 0;
+}
+
+h3 {
+  padding: 0.5rem 0;
+}
+
+article {
+  border-left: 4px solid skyblue;
+  padding: 1.2rem;
+}
+
+section {
+  margin-top: 1.5rem;
+  border-left: 4px solid skyblue;
+  padding: 1.2rem;
+}
+
+textarea {
+  background: skyblue;
+}
+
+hr {
+  border: none;
+  border-bottom: 2px solid #333;
+  height: 0;
+  margin: 2px 0;
+}
+
+strong {
+  background: rgb(178, 229, 249);
+}
+
+ins {
+  background: #c6f6d5;
+}
+
+em {
+  background: yellow;
+}
+
+del {
+  color: red;
+}
+
+span {
+  display: inline-block;
+  border-radius: 5px;
+  background: #bee3f8;
+}
+
+dt {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+a {
+  color: green;
+  text-decoration: none;
+}
+
+
+/* a --> 哈(ha) */
+a:hover {
+  color: skyblue;
+}
+
+a:active {
+  color: red;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+th {
+  background: skyblue;
+  height: 3rem;
+  text-align: center;
+}
+
+td {
+  background: #ddd;
+  height: 2rem;
+  text-align: center;
+}
+
+form {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1.2rem;
+}
+
+label {
+  font-size: 1.2rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+textarea {
+  will-change: background-color;
+  transition: background-color 0.5s;
+}
+
+input:focus {
+  outline: 1px solid #000;
+}
+
+textarea:focus {
+  background-color: #fafafa;
+}
+
+figure {
+  text-align: center;
+}
+
+#media {
+  margin-top: 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+footer {
+  text-align: center;
+  vertical-align: center;
+}
+
+button {
+  background-color: skyblue;
+  width: 100%;
+  height: 2.5rem;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+  /* wait text url(),auto*/
+}
+
+button[type=reset] {
+  background: red;
+}
+
+/* fixed定位参照于浏览器窗口，absolute定位参照于向上祖宗首非默认定位盒子 */
+.aside {
+  position: relative;
+}
+
+aside {
+  position: sticky;
+  top: 16vh;
+  z-index: 1;
+}
+
+.extends {
+  position: absolute;
+  bottom: 0;
+  margin: 1rem;
+}
+
+@keyframes slide {
+
+  0%,
+  30% {
+    transform: translate(0, 0);
+  }
+
+  50%,
+  80% {
+    transform: translate(-120%, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+#slide {
+  display: flex;
+  flex-direction: row;
+  gap: 20%;
+  width: 60%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#slide .container {
+  animation: slide 8s infinite;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.container {
+  width: 100%;
+  height: 30vh;
+  flex: 0 0 100%;
+  /* 扩缩基 */
+}
+
+/* and or not */
+@media (min-width: 768px) {
+  /* pass */
+}
